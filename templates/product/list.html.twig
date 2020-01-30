@@ -10,9 +10,19 @@
                         <p>{{ product.description }}</p>
                         <p><strong>{{ product.price / 100 }} €</strong></p>
                         <a href="{{ path('product_show', { id: product.id }) }}"
-                           class="btn btn-secondary"
+                           class="btn btn-secondary btn-sm"
                         >
-                            Voir le produit
+                            Voir
+                        </a>
+                        <a href="{{ path('product_edit', { id: product.id }) }}"
+                           class="btn btn-success btn-sm"
+                        >
+                            Modifier
+                        </a>
+                        <a href="{{ path('product_delete', { id: product.id }) }}"
+                           class="btn btn-danger btn-sm"
+                        >
+                            Supprimer
                         </a>
                     </div>
                 </div>
