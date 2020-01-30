@@ -22,7 +22,7 @@ class IndexController extends AbstractController
         // Persister est le fait d'insérer / de modifier dans la base
         $entityManager->persist($product);
         // Flush exécute la requête
-        $entityManager->flush();
+        // $entityManager->flush();
 
         return $this->render('index/homepage.html.twig');
     }
