@@ -35,4 +35,24 @@ class ProductController extends AbstractController
             'form' => $form->createView(),
         ]);
     }
+
+    /**
+     * @Route("/product/{id}", name="product_show")
+     */
+    public function show($id)
+    {
+        // On récupère le dépôt qui contient nos produits
+        $productRepository = $this->getDoctrine()->getRepository(Product::class);
+        // SELECT * FROM product WHERE id = $id
+        $product = $productRepository->find($id);
+
+        // Si le produit n'existe pas en BDD
+        if (!$product) {
+            throw $this->createNotFoundException('Le produit n\'existe pas.');
+        }
+
+        return $this->render('product/show.html.twig', [
+            'product' => $product,
+        ]);
+    }
 }
