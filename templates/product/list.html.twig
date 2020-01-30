@@ -19,11 +19,15 @@
                         >
                             Modifier
                         </a>
-                        <a href="{{ path('product_delete', { id: product.id }) }}"
+                        <!-- <a href="{{ path('product_delete', { id: product.id }) }}"
                            class="btn btn-danger btn-sm"
                         >
                             Supprimer
-                        </a>
+                        </a> -->
+                        <form action="{{ path('product_delete', { id: product.id }) }}" method="post" class="d-inline">
+                            <input type="hidden" name="token" value="{{ csrf_token('delete') }}">
+                            <button class="btn btn-danger btn-sm">Supprimer</button>
+                        </form>
                     </div>
                 </div>
             </div>
