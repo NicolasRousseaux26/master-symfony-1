@@ -13,6 +13,7 @@ class AppFixtures extends Fixture
         for ($i = 1; $i <= 100; ++$i) {
             $product = new Product();
             $product->setName('iPhone '.$i);
+            $product->setSlug('iphone-'.$i);
             $product->setDescription('Un iPhone de '.rand(2000, 2020));
             $product->setPrice(rand(10, 1000) * 100);
             $manager->persist($product);

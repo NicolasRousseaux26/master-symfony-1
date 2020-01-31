@@ -29,3 +29,9 @@ On crée le schéma :
 ```bash
 php bin/console doctrine:migrations:migrate
 ```
+
+On lance les fixtures :
+
+```bash
+php bin/console doctrine:fixtures:load
+```

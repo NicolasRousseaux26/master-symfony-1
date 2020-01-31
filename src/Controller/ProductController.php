@@ -39,14 +39,15 @@ class ProductController extends AbstractController
     }
 
     /**
-     * @Route("/product/{id}", name="product_show")
+     * @Route("/product/{slug}", name="product_show")
      */
-    public function show($id)
+    public function show($slug)
     {
         // On récupère le dépôt qui contient nos produits
         $productRepository = $this->getDoctrine()->getRepository(Product::class);
-        // SELECT * FROM product WHERE id = $id
-        $product = $productRepository->find($id);
+        // SELECT * FROM product WHERE slug = $slug
+        // $productRepository->findOneBy(['slug' => $slug]);
+        $product = $productRepository->findOneBySlug($slug);
 
         // Si le produit n'existe pas en BDD
         if (!$product) {
