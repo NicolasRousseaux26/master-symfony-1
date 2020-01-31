@@ -14,9 +14,11 @@ class IndexController extends AbstractController
     public function homepage(ProductRepository $productRepository)
     {
         $products = $productRepository->findAllGreaterThanPrice(700);
+        $favoriteProduct = $productRepository->findOneGreaterThanPrice(800);
 
         return $this->render('index/homepage.html.twig', [
             'products' => $products,
+            'favorite_product' => $favoriteProduct,
         ]);
     }
 }

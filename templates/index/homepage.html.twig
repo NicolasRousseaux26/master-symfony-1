@@ -13,9 +13,25 @@
                         <h5 class="card-title">{{ product.name }}</h5>
                         <p>{{ product.description }}</p>
                         <p><strong>{{ product.price / 100 }} €</strong></p>
+                        <a href="{{ path('product_show', { slug: product.slug }) }}"
+                           class="btn btn-primary"
+                        >Voir</a>
                     </div>
                 </div>
             </div>
         {% endfor %}
     </div>
+
+    {% if favorite_product %}
+    <h2 class="mt-5 text-center">Produit favori :</h2>
+    <div class="card shadow mb-5 w-50 mx-auto">
+        <div class="card-body text-center">
+            <h5>{{ favorite_product.name }}</h5>
+            <p><strong>{{ favorite_product.price / 100 }} €</strong></p>
+            <a href="{{ path('product_show', { slug: favorite_product.slug }) }}"
+               class="btn btn-primary"
+            >Voir</a>
+        </div>
+    </div>
+    {% endif %}
 {% endblock %}
