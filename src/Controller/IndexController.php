@@ -2,7 +2,7 @@
 
 namespace App\Controller;
 
-use App\Entity\Product;
+use App\Repository\ProductRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Routing\Annotation\Route;
 
@@ -11,19 +11,12 @@ class IndexController extends AbstractController
     /**
      * @Route("/", name="homepage")
      */
-    public function homepage()
+    public function homepage(ProductRepository $productRepository)
     {
-        $product = new Product();
-        $product->setName('iPhone');
-        $product->setDescription('Mon produit');
-        $product->setPrice(999);
+        $products = $productRepository->findAllGreaterThanPrice(700);
 
-        $entityManager = $this->getDoctrine()->getManager();
-        // Persister est le fait d'insérer / de modifier dans la base
-        $entityManager->persist($product);
-        // Flush exécute la requête
-        // $entityManager->flush();
-
-        return $this->render('index/homepage.html.twig');
+        return $this->render('index/homepage.html.twig', [
+            'products' => $products,
+        ]);
     }
 }

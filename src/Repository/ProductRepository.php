@@ -19,6 +19,27 @@ class ProductRepository extends ServiceEntityRepository
         parent::__construct($registry, Product::class);
     }
 
+    /**
+     * Permet de récupèrer les produits plus chers qu'un certain montant
+     */
+    public function findAllGreaterThanPrice($price): array
+    {
+        // SELECT * FROM product WHERE price > 500
+
+        // SELECT id, name, description, slug FROM product p
+        // WHERE p.price > 50000
+        // ORDER BY p.price ASC
+        // LIMIT 0, 4
+        $queryBuilder = $this->createQueryBuilder('p')
+            ->where('p.price > :price')
+            ->setParameter('price', $price * 100)
+            ->orderBy('p.price', 'ASC')
+            ->setMaxResults(4)
+            ->getQuery();
+
+        return $queryBuilder->getResult();
+    }
+
     // /**
     //  * @return Product[] Returns an array of Product objects
     //  */

@@ -2,4 +2,20 @@
 
 {% block body %}
     <h1>Bienvenue sur mon site</h1>
+
+    <h2>Nos produits les plus vendus :</h2>
+
+    <div class="row">
+        {% for product in products %}
+            <div class="col-lg-3">
+                <div class="card mt-3 shadow">
+                    <div class="card-body">
+                        <h5 class="card-title">{{ product.name }}</h5>
+                        <p>{{ product.description }}</p>
+                        <p><strong>{{ product.price / 100 }} €</strong></p>
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
 {% endblock %}
