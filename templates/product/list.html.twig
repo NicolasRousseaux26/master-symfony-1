@@ -9,6 +9,12 @@
                         <h5 class="card-title">{{ product.name }}</h5>
                         <p>{{ product.description }}</p>
                         <p><strong>{{ product.price / 100 }} €</strong></p>
+                        <p>
+                            Vendeur:
+                            <a href="{{ path('user_show', { id: product.user.id }) }}">
+                                {{ product.user.username }}
+                            </a>
+                        </p>
                         <a href="{{ path('product_show', { slug: product.slug }) }}"
                            class="btn btn-secondary btn-sm"
                         >

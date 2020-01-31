@@ -54,6 +54,16 @@ class ProductRepository extends ServiceEntityRepository
         return $queryBuilder->setMaxResults(1)->getOneOrNullResult();
     }
 
+    public function findAll()
+    {
+        $queryBuilder = $this->createQueryBuilder('p')
+            ->innerJoin('p.user', 'u')
+            ->addSelect('u')
+            ->getQuery();
+
+        return $queryBuilder->getResult();
+    }
+
     // /**
     //  * @return Product[] Returns an array of Product objects
     //  */
