@@ -3,4 +3,5 @@
 {% block body %}
     <h1>{{ product.name }}</h1>
     <p>Prix: {{ product.price / 100 }} €</p>
+    <p>Vendeur: {{ product.user.username }}</p>
 {% endblock %}

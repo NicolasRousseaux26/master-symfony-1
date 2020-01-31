@@ -50,7 +50,11 @@ class ProductController extends AbstractController
         $productRepository = $this->getDoctrine()->getRepository(Product::class);
         // SELECT * FROM product WHERE slug = $slug
         // $productRepository->findOneBy(['slug' => $slug]);
+        /** @var Product $product */
         $product = $productRepository->findOneBySlug($slug);
+
+        // User
+        // dump($product->getUser()->getUsername());
 
         // Si le produit n'existe pas en BDD
         if (!$product) {
