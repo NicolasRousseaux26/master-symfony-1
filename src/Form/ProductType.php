@@ -2,7 +2,10 @@
 
 namespace App\Form;
 
+use App\Entity\Category;
 use App\Entity\Product;
+use App\Repository\CategoryRepository;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\MoneyType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -19,6 +22,8 @@ class ProductType extends AbstractType
             ->add('price', MoneyType::class, [
                 'divisor' => 100
             ])
+            ->add('category')
+            ->add('user')
         ;
     }
 
