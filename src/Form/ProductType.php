@@ -4,6 +4,7 @@ namespace App\Form;
 
 use App\Entity\Category;
 use App\Entity\Product;
+use App\Form\Type\TagsInputType;
 use App\Repository\CategoryRepository;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
@@ -25,10 +26,7 @@ class ProductType extends AbstractType
             ])
             ->add('category')
             ->add('user')
-            ->add('tags', null, [
-                'choice_label' => 'name',
-                'expanded' => true,
-            ])
+            ->add('tags', TagsInputType::class)
         ;
     }
 
