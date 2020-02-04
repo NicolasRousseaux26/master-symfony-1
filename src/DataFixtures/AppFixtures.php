@@ -4,6 +4,7 @@ namespace App\DataFixtures;
 
 use App\Entity\Category;
 use App\Entity\Product;
+use App\Entity\Tag;
 use App\Entity\User;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\Persistence\ObjectManager;
@@ -24,6 +25,13 @@ class AppFixtures extends Fixture
     public function load(ObjectManager $manager)
     {
         $faker = \Faker\Factory::create('fr_FR');
+
+        // Créer les tags
+        for ($i = 1; $i <= 10; ++$i) {
+            $tag = new Tag();
+            $tag->setName('Tag '.$i);
+            $manager->persist($tag);
+        }
 
         // Créer les catégories
         $plainCategories = ['Smartphone', 'TV', 'PC', 'Hi-Fi'];

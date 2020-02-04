@@ -24,6 +24,10 @@ class ProductType extends AbstractType
             ])
             ->add('category')
             ->add('user')
+            ->add('tags', null, [
+                'choice_label' => 'name',
+                'expanded' => true,
+            ])
         ;
     }
 
