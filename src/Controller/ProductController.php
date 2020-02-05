@@ -7,6 +7,7 @@ use App\Form\ProductType;
 use App\Repository\ProductRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\String\Slugger\SluggerInterface;
@@ -81,7 +82,7 @@ class ProductController extends AbstractController
     /**
      * @Route("/product/edit/{id}", name="product_edit")
      */
-    public function edit(Request $request, Product $product)
+    public function edit(Request $request, Product $product, $uploadDir)
     {
         // Du code...
         $this->denyAccessUnlessGranted('edit', $product);
@@ -91,6 +92,17 @@ class ProductController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            // On fait l'upload...
+            /** @var UploadedFile $image */
+            if ($image = $form->get('image')->getData()) {
+                // Génére le nom de l'image
+                $fileName = uniqid().'.'.$image->guessExtension();
+                // Déplace l'image
+                $image->move($uploadDir, $fileName);
+                // Met à jour l'entité
+                $product->setImage($fileName);
+            }
+
             // Met à jour l'objet dans la BDD
             $this->getDoctrine()->getManager()->flush();
 

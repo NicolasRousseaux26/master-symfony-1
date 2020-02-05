@@ -26,6 +26,12 @@ class ProductType extends AbstractType
             ->add('price', MoneyType::class, [
                 'divisor' => 100
             ])
+            ->add('image', FileType::class, [
+                'mapped' => false,
+                'attr' => [
+                    'placeholder' => 'Choisir une image',
+                ],
+            ])
             ->add('category')
             ->add('user')
             ->add('tags', TagsInputType::class)
