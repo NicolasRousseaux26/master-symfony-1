@@ -45,3 +45,16 @@
     outline: 0;
     background-color: #428bca;
 }
+
+.admin {
+    min-height: 100vh;
+}
+
+.admin-navbar {
+    width: 20vw;
+}
+
+.admin-navbar a {
+    color: #fff;
+    text-decoration: none;
+}

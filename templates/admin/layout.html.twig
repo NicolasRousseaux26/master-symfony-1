@@ -1,0 +1,28 @@
+{% extends 'base.html.twig' %}
+
+{% block wrapper %}
+    <div class="d-flex admin">
+        <div class="admin-navbar bg-dark py-4">
+            <ul class="list-unstyled">
+                <li class="px-4 py-2">
+                    <a href="{{ path('backoffice') }}">
+                        <i class="fas fa-home"></i> Accueil
+                    </a>
+                </li>
+                <li class="px-4 py-2">
+                    <a href="{{ path('category_index') }}">
+                        <i class="fas fa-folder-open"></i> Catégories
+                    </a>
+                </li>
+                <li class="px-4 py-2">
+                    <a href="{{ path('homepage') }}">
+                        <i class="fas fa-arrow-left"></i> Revenir sur le site
+                    </a>
+                </li>
+            </ul>
+        </div>
+        <div class="container-fluid px-5">
+            {% block body %}{% endblock %}
+        </div>
+    </div>
+{% endblock %}
