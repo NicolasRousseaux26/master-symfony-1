@@ -14,7 +14,7 @@ use Symfony\Component\String\Slugger\SluggerInterface;
 class ProductController extends AbstractController
 {
     /**
-     * @Route("/product/create", name="product_create")
+     * @Route("/admin/product/create", name="product_create")
      */
     public function create(Request $request, SluggerInterface $slugger)
     {
@@ -79,7 +79,7 @@ class ProductController extends AbstractController
     }
 
     /**
-     * @Route("/product/edit/{id}", name="product_edit")
+     * @Route("/admin/product/edit/{id}", name="product_edit")
      */
     public function edit(Request $request, Product $product)
     {
@@ -101,7 +101,7 @@ class ProductController extends AbstractController
     }
 
     /**
-     * @Route("/product/delete/{id}", name="product_delete", methods={"POST"})
+     * @Route("/admin/product/delete/{id}", name="product_delete", methods={"POST"})
      */
     public function delete(Request $request, Product $product, EntityManagerInterface $entityManager)
     {

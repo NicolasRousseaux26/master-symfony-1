@@ -5,10 +5,12 @@ security:
 
     # https://symfony.com/doc/current/security.html#where-do-users-come-from-user-providers
     providers:
-        in_memory:
+        customers:
             memory:
                 users:
                     matthieu: { password: '$argon2id$v=19$m=65536,t=4,p=1$TMAYf03qU5AZpW7IDOPaNQ$4d5RX2gU/GdB049EkMxqzx1DUWYhMkXxadJkCzeNu0A', roles: [ 'ROLE_ADMIN' ] }
+                    fiorella: { password: '$argon2id$v=19$m=65536,t=4,p=1$pmQ9UJhq4+eYCo6mmWmePw$E4mryEvb7cBJMUJGkyyikgGeje5+L+EXxE/MtS63wQ0', roles: [ 'ROLE_USER' ] }
+
     firewalls:
         dev:
             pattern: ^/(_(profiler|wdt)|css|images|js)/
@@ -16,8 +18,10 @@ security:
         main:
             anonymous: lazy
 
-            http_basic:
-                realm: Zone sécurisée
+            form_login:
+                login_path: login
+                check_path: login
+            logout: true
             # activate different ways to authenticate
             # https://symfony.com/doc/current/security.html#firewalls-authentication
 
@@ -27,6 +31,9 @@ security:
     # Easy way to control access for large sections of your site
     # Note: Only the *first* access control that matches will be used
     access_control:
-        - { path: ^/product/create$, roles: ROLE_ADMIN }
-        # - { path: ^/admin, roles: ROLE_ADMIN }
-        # - { path: ^/profile, roles: ROLE_USER }
+        # Pour faire un back office
+        - { path: ^/admin/product, roles: ROLE_ADMIN }
+        - { path: ^/profile, roles: ROLE_USER }
+        # Pour faire un intranet
+        # - { path: ^/login, roles: IS_AUTHENTICATED_ANONYMOUSLY }
+        # - { path: ^/, roles: ROLE_USER }
