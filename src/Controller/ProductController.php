@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\Product;
 use App\Form\ProductType;
 use App\Repository\ProductRepository;
+use App\Service\Uploader;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
@@ -17,7 +18,7 @@ class ProductController extends AbstractController
     /**
      * @Route("/admin/product/create", name="product_create")
      */
-    public function create(Request $request, SluggerInterface $slugger)
+    public function create(Request $request, SluggerInterface $slugger, Uploader $uploader)
     {
         $product = new Product();
         // On crée un formulaire avec deux paramètres: la classe du formulaire et l'objet à ajouter dans la BDD
@@ -27,6 +28,15 @@ class ProductController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             // Je génère le slug à la création du produit
             $product->setSlug($slugger->slug($product->getName())->lower());
+
+            // On fait l'upload...
+            /** @var UploadedFile $image */
+            if ($image = $form->get('image')->getData()) {
+                $fileName = $uploader->upload($image);
+                // Met à jour l'entité
+                $product->setImage($fileName);
+            }
+
             // Ajouter le produit en BDD...
             $entityManager = $this->getDoctrine()->getManager();
             // On met l'objet en attente
@@ -82,7 +92,7 @@ class ProductController extends AbstractController
     /**
      * @Route("/product/edit/{id}", name="product_edit")
      */
-    public function edit(Request $request, Product $product, $uploadDir)
+    public function edit(Request $request, Product $product, Uploader $uploader)
     {
         // Du code...
         $this->denyAccessUnlessGranted('edit', $product);
@@ -95,10 +105,12 @@ class ProductController extends AbstractController
             // On fait l'upload...
             /** @var UploadedFile $image */
             if ($image = $form->get('image')->getData()) {
-                // Génére le nom de l'image
-                $fileName = uniqid().'.'.$image->guessExtension();
-                // Déplace l'image
-                $image->move($uploadDir, $fileName);
+                // Supprimer l'image déjà existante
+                if ($product->getImage()) {
+                    $uploader->remove($product->getImage());
+                }
+
+                $fileName = $uploader->upload($image);
                 // Met à jour l'entité
                 $product->setImage($fileName);
             }
@@ -118,11 +130,15 @@ class ProductController extends AbstractController
     /**
      * @Route("/admin/product/delete/{id}", name="product_delete", methods={"POST"})
      */
-    public function delete(Request $request, Product $product, EntityManagerInterface $entityManager)
+    public function delete(Request $request, Product $product, EntityManagerInterface $entityManager, Uploader $uploader)
     {
         // On vérifie la validité du token CSRF
         // On se protège d'une faille CSRF
         if ($this->isCsrfTokenValid('delete', $request->get('token'))) {
+            if ($product->getImage()) {
+                $uploader->remove($product->getImage());
+            }
+
             $entityManager->remove($product);
             $entityManager->flush();
         }
