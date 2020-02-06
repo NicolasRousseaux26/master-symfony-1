@@ -16,10 +16,11 @@ use Symfony\Component\String\Slugger\SluggerInterface;
 class ProductController extends AbstractController
 {
     /**
-     * @Route("/admin/product/create", name="product_create")
+     * @Route("/product/create", name="product_create")
      */
     public function create(Request $request, SluggerInterface $slugger, Uploader $uploader)
     {
+        $this->denyAccessUnlessGranted('ROLE_USER');
         $product = new Product();
         // On crée un formulaire avec deux paramètres: la classe du formulaire et l'objet à ajouter dans la BDD
         $form = $this->createForm(ProductType::class, $product);
@@ -28,6 +29,11 @@ class ProductController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             // Je génère le slug à la création du produit
             $product->setSlug($slugger->slug($product->getName())->lower());
+
+            // Quand un vendeur crée un produit, on l'associe
+            if (!$product->getUser()) {
+                $product->setUser($this->getUser());
+            }
 
             // On fait l'upload...
             /** @var UploadedFile $image */
@@ -128,10 +134,11 @@ class ProductController extends AbstractController
     }
 
     /**
-     * @Route("/admin/product/delete/{id}", name="product_delete", methods={"POST"})
+     * @Route("/product/delete/{id}", name="product_delete", methods={"POST"})
      */
     public function delete(Request $request, Product $product, EntityManagerInterface $entityManager, Uploader $uploader)
     {
+        $this->denyAccessUnlessGranted('edit', $product);
         // On vérifie la validité du token CSRF
         // On se protège d'une faille CSRF
         if ($this->isCsrfTokenValid('delete', $request->get('token'))) {
